@@ -1,0 +1,15 @@
+{
+  "name": "phelps",
+  "version": "0.0.1",
+  "description": "A phishing query bot",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Swimlane LLC",
+  "license": "MIT",
+  "dependencies": {
+    "botbuilder": "^0.6.0",
+    "restify": "^4.0.4"
+  }
+}
