@@ -1,5 +1,5 @@
 {
-  "name": "phelps",
+  "name": "makobot",
   "version": "0.0.1",
   "description": "A phishing query bot",
   "main": "app.js",
