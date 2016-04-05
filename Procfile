@@ -1,2 +1,1 @@
-
-web: node app.js
+web: python -m makobot
