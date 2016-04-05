@@ -1,1 +1,1 @@
-web: python -m makobot
+worker: python -m makobot

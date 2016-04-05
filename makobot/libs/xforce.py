@@ -23,11 +23,11 @@ class XForce(object):
     def risk_level(cls, score):
         if score < 2:
             return 'VERY LOW'
-        elif 2 >= score < 3:
+        elif 2 <= score < 3:
             return 'LOW'
-        elif 3 >= score < 5:
+        elif 3 <= score < 5:
             return 'MODERATE'
-        elif 5 >= score < 8:
+        elif 5 <= score < 8:
             return 'HIGH'
         elif score >= 8:
             return 'VERY HIGH'
