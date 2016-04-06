@@ -42,7 +42,7 @@ def ipr_report(ipr, inline=False):
         report.append('Categories: %s' % ', '.join([
             '%s (%s)' % (k, v) for k, v in ipr['cats'].items()]))
     if inline:
-        return ' '.j(report)
+        return ' '.join(report)
     return '\n'.join(report)
 
 

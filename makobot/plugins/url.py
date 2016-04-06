@@ -42,7 +42,7 @@ def urlr_report(urlr, inline=False):
     if 'result' not in urlr:
         return report
     urlr = urlr['result']
-    if 'url' in urlr:
+    if 'url' in urlr:   
         report.append('X-Force URL Reputation for %s' % urlr['url'])
     if 'score' in urlr:
         report.append('Score: %s' % urlr['score'])
