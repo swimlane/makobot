@@ -1,6 +1,5 @@
 import re
 from urlparse import urlparse
-from urllib import unquote
 
 from slackbot.bot import listen_to, respond_to
 
@@ -17,7 +16,8 @@ def extract_urls(message):
 
 
 def clean_url(url):
-    url = url.strip('>')
+    """Returns only the scheme and domain of URL, minus Slack formatting"""
+    url = url.lstrip('<').rstrip('>')
     parsed_url = urlparse(url)
     return '{url.scheme}://{url.netloc}'.format(url=parsed_url)
 
@@ -53,7 +53,7 @@ def urlr_report(urlr, inline=False):
         report.append('Categories: %s' % ', '.join([
             k for k, v in urlr['cats'].items()]))
     if inline:
-        return ' '.j(report)
+        return ' '.join(report)
     return '\n'.join(report)
 
 
