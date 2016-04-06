@@ -29,7 +29,10 @@ def xforce_url(urls):
         return urlrs
     xforce = XForce(settings.XFORCE_API_KEY, settings.XFORCE_PASSWORD)
     for url in urls:
-        urlrs.append(xforce.url(url))
+        try:
+            urlrs.append(xforce.url(url))
+        except Exception:
+            pass
     return urlrs
 
 
