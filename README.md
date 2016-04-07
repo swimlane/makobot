@@ -19,7 +19,7 @@ Makobot uses the following environment variables for configuration:
  * *XFORCE_API_KEY:* If using IBM X-Force as a data source, your API key.
  * *XFORCE_PASSWORD:* Your IBM X-Force API password.
 
-Currently only IBM X-Force is supported, but additional data sources will be
+Currently only [IBM X-Force](https://exchange.xforce.ibmcloud.com/) is supported, but additional data sources will be
 added in the future.
 
 ## Usage
