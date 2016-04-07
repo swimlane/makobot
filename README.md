@@ -7,7 +7,7 @@ When you see thunder and lightning it's probably best to avoid. If the risk
 level is high enough, Makobot will provide additional details about the
 potential threat.
 
-## Installation
+### Installation
 
 You can install Makobot using pip:
 
@@ -22,7 +22,7 @@ Makobot uses the following environment variables for configuration:
 Currently only [IBM X-Force](https://exchange.xforce.ibmcloud.com/) is supported, but additional data sources will be
 added in the future.
 
-## Usage
+### Usage
 
 Starting makobot is simple, just run:
 
