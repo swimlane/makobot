@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import re
 
 from slackbot.bot import listen_to, respond_to

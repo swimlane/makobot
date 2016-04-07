@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
+
 import re
 
 from slackbot.bot import listen_to, respond_to
 
 from makobot import slackbot_settings as settings
 from makobot.libs.xforce import XForce
+from makobot.utils import reaction, risk_level
 
 IP_REGEX = re.compile(
     r'(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})')
@@ -35,7 +38,7 @@ def ipr_report(ipr, inline=False):
         report.append('X-Force IP Reputation for %s' % ipr['ip'])
     if 'score' in ipr:
         report.append('Score: %s' % ipr['score'])
-        report.append('Risk Level: %s' % XForce.risk_level(ipr['score']))
+        report.append('Risk Level: %s' % risk_level(ipr['score']))
     if 'reason' in ipr:
         report.append('Reason: %s' % ipr['reason'])
     if 'cats' in ipr and ipr['cats']:
@@ -50,20 +53,34 @@ def ipr_report(ipr, inline=False):
 def ip_active(message):
     ips = extract_ips(message)
     iprs = xforce_ipr(ips)
+
     if not iprs:
-        message.reply('No reputation reports for %s' % ', '.join(iprs))
+        message.reaction('fog')
+        message.reply('No IP reputation reports for %s' % ', '.join(iprs))
+        return
+
+    high_score = 1
     for ipr in iprs:
         message.reply(ipr_report(ipr))
+        if 'score' in ipr and ipr['score'] > high_score:
+            high_score = ipr['score']
+    message.reaction(reaction(high_score))
 
 
 @listen_to(IP_REGEX)
 def ip_passive(message):
     ips = extract_ips(message)
     iprs = xforce_ipr(ips)
-    react = False
+
+    if not iprs:
+        message.react('fog')
+        return
+
+    high_score = 1
     for ipr in iprs:
-        if 'score' in ipr and ipr['score'] >= 3:
-            message.send(ipr_report(ipr, inline=True))
-            react = True
-    if react:
-        message.react('warning')
+        if 'score' in ipr:
+            if ipr['score'] >= 3:
+                message.send(ipr_report(ipr, inline=True))
+            if ipr['score'] > high_score:
+                high_score = ipr['score']
+    message.react(reaction(high_score))
