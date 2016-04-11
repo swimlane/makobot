@@ -1,4 +1,4 @@
-![Makobot](http://content.screencast.com/users/amcdaniel22/folders/Snagit/media/500d7c8e-0d05-4c10-b6ba-363d71958b16/2016-04-08_12-35-49.png)
+![Makobot](https://raw.githubusercontent.com/Swimlane/makobot/master/logo.png)
 
 Makobot will monitor your [Slack channels](http://slack.com) and alert you to potential threats.
 Makobot will assess the risk level of any URL, IP or file that is posted by
