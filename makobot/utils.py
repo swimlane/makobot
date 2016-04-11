@@ -17,3 +17,17 @@ def reaction(score):
         return 'lightning'
     elif 9 >= score:
         return 'tornado'
+
+
+def risk_level(score):
+    if score < 2:
+        return 'VERY LOW'
+    elif 2 <= score < 3:
+        return 'LOW'
+    elif 3 <= score < 5:
+        return 'MODERATE'
+    elif 5 <= score < 8:
+        return 'HIGH'
+    elif score >= 8:
+        return 'VERY HIGH'
+    return 'UNKNOWN'
