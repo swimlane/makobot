@@ -4,9 +4,9 @@ import re
 
 from slackbot.bot import listen_to, respond_to
 
-from makobot import slackbot_settings as settings
-from makobot.libs.xforce import XForce
-from makobot.utils import reaction, risk_level
+from .. import slackbot_settings as settings
+from ..libs.xforce import XForce
+from ..utils import reaction, risk_level
 
 IP_REGEX = re.compile(
     r'(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})')
@@ -51,12 +51,15 @@ def ipr_report(ipr, inline=False):
 
 @respond_to(IP_REGEX)
 def ip_active(message):
+    """Respond to direct messages with an IP reputation report. The active
+    version of this bot is meant to be a query service.
+    """
     ips = extract_ips(message)
     iprs = xforce_ipr(ips)
 
     if not iprs:
         message.reaction('fog')
-        message.reply('No IP reputation reports for %s' % ', '.join(iprs))
+        message.reply('No IP reputation reports for %s' % ', '.join(ips))
         return
 
     high_score = 1
@@ -69,6 +72,10 @@ def ip_active(message):
 
 @listen_to(IP_REGEX)
 def ip_passive(message):
+    """
+    Monitor channels and report IP reputations above a certain threshold. This
+    version of the bot is meant to be a monitoring service.
+    """
     ips = extract_ips(message)
     iprs = xforce_ipr(ips)
 

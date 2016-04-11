@@ -5,9 +5,9 @@ from urlparse import urlparse
 
 from slackbot.bot import listen_to, respond_to
 
-from makobot import slackbot_settings as settings
-from makobot.libs.xforce import XForce
-from makobot.utils import reaction, risk_level
+from .. import slackbot_settings as settings
+from ..libs.xforce import XForce
+from ..utils import reaction, risk_level
 
 URL_REGEX = re.compile(r'(?:https?://[^\s]+)')
 
@@ -61,6 +61,10 @@ def urlr_report(urlr, inline=False):
 
 @respond_to(URL_REGEX)
 def url_active(message, *args):
+    """
+    Responds to direct messages with a URL reputation report. The active
+    version of this bot is meant to be a query service.
+    """
     urls = extract_urls(message)
     urlrs = xforce_url(urls)
 
@@ -79,6 +83,10 @@ def url_active(message, *args):
 
 @listen_to(URL_REGEX)
 def url_passive(message, *args):
+    """
+    Monitor channels and report URL reputations above a certain threshold.
+    This version of the bot is meant to be a monitoring service.
+    """
     urls = extract_urls(message)
     urlrs = xforce_url(urls)
 
