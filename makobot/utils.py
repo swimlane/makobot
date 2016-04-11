@@ -15,7 +15,7 @@ def reaction(score):
         return 'thunder_cloud_and_rain'
     elif 8 >= score < 9:
         return 'lightning'
-    elif 9 >= score:
+    elif score >= 9:
         return 'tornado'
 
 
