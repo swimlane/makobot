@@ -18,3 +18,6 @@ class XForce(object):
 
     def url(self, url):
         return self.get('url', url)
+
+    def malware(self, md5):
+        return self.get('malware', md5)
