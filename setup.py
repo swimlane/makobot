@@ -14,7 +14,7 @@ setup(
     install_requires=['requests', 'slackbot'],
     tests_require=['nose'],
     test_suite='nose.collector',
-    packages=find_packages(),
+    packages=find_packages(exclude=('tests')),
     keywords='slack security bot malware ip url reputation',
     classifiers=[
         'Development Status :: 4 - Beta',
