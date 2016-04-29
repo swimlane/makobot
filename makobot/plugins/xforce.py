@@ -35,6 +35,11 @@ class XForcePlugin(Plugin):
             return 'tornado'
 
     def risk_level(self, score):
+        try:
+            score = float(score)
+        except TypeError:
+            return 'UNKNOWN'
+
         if score < 2:
             return 'VERY LOW'
         elif 2 <= score < 3:
@@ -45,10 +50,9 @@ class XForcePlugin(Plugin):
             return 'HIGH'
         elif score >= 8:
             return 'VERY HIGH'
-        return 'UNKNOWN'
 
 
-class XForceIPReputationPlugin(XForcePlugin, IPExtractor):
+class XForceIPReputationPlugin(IPExtractor, XForcePlugin):
     def report(self, message, active=True):
         self.retrieve_report()
         if not self.reports:
@@ -90,7 +94,7 @@ class XForceIPReputationPlugin(XForcePlugin, IPExtractor):
         return ' '.join(report)
 
 
-class XForceMD5ReputationPlugin(XForcePlugin, MD5Extractor):
+class XForceMD5ReputationPlugin(MD5Extractor, XForcePlugin):
     def report(self, message, active=True):
         self.retrieve_report()
         if not self.reports:
@@ -122,7 +126,7 @@ class XForceMD5ReputationPlugin(XForcePlugin, MD5Extractor):
         return ' '.join(report)
 
 
-class XForceURLReputationPlugin(XForcePlugin, URLExtractor):
+class XForceURLReputationPlugin(URLExtractor, XForcePlugin):
     def report(self, message, active=True):
         self.retrieve_report()
         if not self.reports:

@@ -12,7 +12,7 @@ setup(
     version='0.1.1',
     license='MIT',
     install_requires=['requests', 'slackbot'],
-    tests_require=['nose'],
+    tests_require=['mock', 'nose'],
     test_suite='nose.collector',
     packages=find_packages(exclude=('tests')),
     keywords='slack security bot malware ip url reputation',

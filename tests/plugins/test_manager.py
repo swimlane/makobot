@@ -1,4 +1,5 @@
 from collections import defaultdict
+import mock
 import unittest
 
 from makobot.plugins.base import Plugin
@@ -25,3 +26,17 @@ class PluginManagerTestCase(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             self.plugin_manager.register('test', Foo)
+
+    def test_evaluate(self):
+        class MockPlugin(Plugin):
+            enabled = mock.Mock()
+            activate = mock.Mock()
+            extract = mock.Mock()
+            report = mock.Mock()
+        MockPlugin.enabled.return_value = True
+        mock_message = mock.Mock()
+        self.plugin_manager.register('test', MockPlugin)
+        self.plugin_manager.evaluate('test', mock_message)
+        self.assertTrue(MockPlugin.activate.called)
+        MockPlugin.extract.called_once_with(mock_message)
+        MockPlugin.report.called_once_with(mock_message)
