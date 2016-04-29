@@ -26,5 +26,5 @@ class Plugin(object):
         """
         raise NotImplementedError('Plugin extract method not implemented')
 
-    def report(self, message):
+    def report(self, message, active=True):
         raise NotImplementedError('Plugin report method not implemented')

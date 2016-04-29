@@ -13,11 +13,11 @@ class XForce(object):
         r.raise_for_status()
         return r.json()
 
-    def ipr(self, ip):
+    def ip(self, ip):
         return self.get('ipr', ip)
+
+    def md5(self, md5):
+        return self.get('malware', md5)
 
     def url(self, url):
         return self.get('url', url)
-
-    def malware(self, md5):
-        return self.get('malware', md5)

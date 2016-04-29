@@ -71,7 +71,7 @@ class XForceIPReputationPlugin(XForcePlugin, IPExtractor):
         self.reports = []
         for ip in self.ips:
             try:
-                self.reports.append(self.xforce.report(ip))
+                self.reports.append(self.xforce.ip(ip))
             except Exception:
                 continue
 
@@ -107,7 +107,7 @@ class XForceMD5ReputationPlugin(XForcePlugin, MD5Extractor):
         self.reports = []
         for md5 in self.md5s:
             try:
-                self.reports.append(self.xforce.malware(md5))
+                self.reports.append(self.xforce.md5(md5))
             except Exception:
                 break
 
@@ -149,7 +149,7 @@ class XForceURLReputationPlugin(XForcePlugin, URLExtractor):
             except Exception:
                 break
             if 'result' in report:
-                self.reports.append(report)
+                self.reports.append(report['result'])
 
     def format_report(self, report):
         result = []
