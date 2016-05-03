@@ -1,9 +1,13 @@
+import logging
+
 from makobot import slackbot_settings as settings
 from makobot.libs.xforce import XForce
 
 from .base import Plugin
 from .extractor import IPExtractor, MD5Extractor, URLExtractor
 from .manager import plugin_manager
+
+logger = logging.getLogger(__name__)
 
 
 class XForcePlugin(Plugin):
@@ -12,6 +16,7 @@ class XForcePlugin(Plugin):
         return settings.XFORCE_API_KEY and settings.XFORCE_PASSWORD
 
     def activate(self):
+        logger.debug('Activating %s' % self.__class__.__name__)
         self.xforce = XForce(settings.XFORCE_API_KEY, settings.XFORCE_PASSWORD)
 
     def reaction(self, score):

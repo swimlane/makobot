@@ -109,4 +109,4 @@ class XForceURLReputationPluginTestCase(unittest.TestCase):
         except NotImplementedError as e:
             self.fail(e.message)
 
-        self.assertEqual(len(self.plugin.urls), 1)
+        self.assertEqual(len(self.plugin.), 1)
