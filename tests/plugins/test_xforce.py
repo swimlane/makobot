@@ -9,7 +9,10 @@ class XForcePluginTestCase(unittest.TestCase):
     def setUp(self):
         self.plugin = XForcePlugin()
 
-    def test_enabled(self):
+    @mock.patch('makobot.plugins.xforce.settings', autospec=True)
+    def test_enabled_false(self, mock_settings):
+        mock_settings.XFORCE_API_KEY = None
+        mock_settings.XFORCE_PASSWORD = None
         self.assertFalse(self.plugin.enabled)
 
     @mock.patch('makobot.plugins.xforce.settings', autospec=True)
@@ -19,9 +22,13 @@ class XForcePluginTestCase(unittest.TestCase):
         self.assertTrue(self.plugin.enabled)
 
     @mock.patch('makobot.plugins.xforce.XForce', autospec=True)
-    def test_activatE(self, mock_xforce):
+    @mock.patch('makobot.plugins.xforce.settings', autospec=True)
+    def test_activatE(self, mock_settings, mock_xforce):
         self.plugin.activate()
-        mock_xforce.assert_called_once_with(None, None)
+        mock_xforce.assert_called_once_with(
+            mock_settings.XFORCE_API_KEY,
+            mock_settings.XFORCE_PASSWORD
+        )
         self.assertEqual(self.plugin.xforce, mock_xforce.return_value)
 
     def test_reaction(self):
@@ -108,5 +115,3 @@ class XForceURLReputationPluginTestCase(unittest.TestCase):
             self.plugin.extract(Message())
         except NotImplementedError as e:
             self.fail(e.message)
-
-        self.assertEqual(len(self.plugin.), 1)

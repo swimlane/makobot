@@ -1,6 +1,6 @@
 from collections import defaultdict
 import inspect
-mport loging
+import logging
 
 from .base import Plugin
 
@@ -12,21 +12,21 @@ class PluginManager(object):
         logger.debug('Initializing plugin manager')
         self.plugins = defaultdict(set)
 
-    def register(self, type, plugin):
+    def register(self, category, plugin):
         if not inspect.isclass(plugin) or not issubclass(plugin, Plugin):
             raise ValueError(
                 'Plugin must be a class and inherit from Plugin class')
-        logger.debug('Registering %s plugin: %s' % (type, plugin))
-        self.plugins[type].add(plugin)
+        logger.debug('Registering %s plugin: %s' % (category, plugin))
+        self.plugins[category].add(plugin)
 
-    def evaluate(self, type, message):
+    def evaluate(self, category, message):
         logger.debug('Evaluating %s message: %s' % (
-            type, message.body.get('text')))
-        for plugin in self.plugins[type]:
+            category, message.body.get('text')))
+        for plugin in self.plugins[category]:
             plugin = plugin()
             if plugin.enabled:
-                logger.debug('Evaluating %s message with %' % (
-                    type, plugin))
+                logger.debug('Evaluating %s message with %s' % (
+                    category, plugin))
                 plugin.activate()
                 plugin.extract(message)
                 plugin.report(message)
