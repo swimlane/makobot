@@ -60,30 +60,33 @@ class XForcePlugin(Plugin):
 
 class XForceIPReputationPlugin(IPExtractor, XForcePlugin):
     def report(self, message, active=True):
-        self.retrieve_report()
-        if not self.reports:
-            message.reaction('fog')
+        reports = self.retrieve_reports()
+        if not reports:
+            message.react('fog')
             if active:
                 message.reply('No IP reputation reports for %s' %
                               ', '.join(self.ips))
             return
         high_score = 1
-        for report in self.reports:
+        for report in reports:
             if active:
                 message.reply(self.format_report(report))
             elif 'score' in report and report['score'] >= 3:
                 message.send(self.format_report(report))
             if 'score' in report and report['score'] > high_score:
                 high_score = report['score']
-        message.reaction(self.reaction(high_score))
+        message.react(self.reaction(high_score))
 
-    def retrieve_report(self):
-        self.reports = []
+    def retrieve_reports(self):
+        reports = []
         for ip in self.ips:
             try:
-                self.reports.append(self.xforce.ip(ip))
-            except Exception:
-                continue
+                reports.append(self.xforce.ip(ip))
+            except Exception as e:
+                logger.debug('Error retrieving IP reputation for %s: %s' % (
+                    ip, e.message))
+                break
+        return reports
 
     def format_report(self, report):
         result = []
@@ -97,29 +100,34 @@ class XForceIPReputationPlugin(IPExtractor, XForcePlugin):
         if 'cats' in report and report['cats']:
             result.append('Categories: %s' % ', '.join([
                 '%s (%s)' % (k, v) for k, v in report['cats'].items()]))
-        return ' '.join(report)
+        return ' '.join(result)
 
 
 class XForceMD5ReputationPlugin(MD5Extractor, XForcePlugin):
     def report(self, message, active=True):
-        self.retrieve_report()
-        if not self.reports:
-            message.reaction('fog')
+        reports = self.retrieve_reports()
+        if not reports:
+            message.react('fog')
             if active:
                 message.reply('No malware reports for %s' %
                               ', '.join(self.md5s))
             return
-        for report in self.reports:
+        for report in reports:
             message.reply(self.format_report(report))
-            message.reaction('lightning')
+            message.react('lightning')
 
-    def retrieve_report(self):
-        self.reports = []
+    def retrieve_reports(self):
+        reports = []
         for md5 in self.md5s:
             try:
-                self.reports.append(self.xforce.md5(md5))
-            except Exception:
+                report = self.xforce.md5(md5)
+            except Exception as e:
+                logger.error('Error retrieving MD5 reputation for %s: %s' % (
+                    md5, e.message))
                 break
+            if 'malware' in report:
+                reports.append(report['malware'])
+        return reports
 
     def format_report(self, report, inline=False):
         result = []
@@ -129,20 +137,20 @@ class XForceMD5ReputationPlugin(MD5Extractor, XForcePlugin):
             result.append('Malware Family: %s' % ', '.join(report['family']))
         if 'risk' in report:
             result.append('Risk: %s' % report['risk'])
-        return ' '.join(report)
+        return ' '.join(result)
 
 
 class XForceURLReputationPlugin(URLExtractor, XForcePlugin):
     def report(self, message, active=True):
-        self.retrieve_report()
-        if not self.reports:
+        reports = self.retrieve_reports()
+        if not reports:
             message.react('fog')
             if active:
                 message.reply('No URL reputation reports for %s' %
                               ', '.join(self.urls))
             return
         high_score = 1
-        for report in self.reports:
+        for report in reports:
             if active:
                 message.reply(self.format_report(report))
             elif 'score' in report and report['score'] >= 3:
@@ -151,15 +159,18 @@ class XForceURLReputationPlugin(URLExtractor, XForcePlugin):
                 high_score = report['score']
         message.react(self.reaction(high_score))
 
-    def retrieve_report(self):
-        self.reports = []
+    def retrieve_reports(self):
+        reports = []
         for url in self.urls:
             try:
                 report = self.xforce.url(url)
-            except Exception:
+            except Exception as e:
+                logger.error('Error retrieving URL reputation for %s: %s' % (
+                    url, e.message))
                 break
             if 'result' in report:
-                self.reports.append(report['result'])
+                reports.append(report['result'])
+        return reports
 
     def format_report(self, report):
         result = []

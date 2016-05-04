@@ -1,4 +1,5 @@
 import mock
+import os
 import unittest
 
 from makobot.plugins.xforce import XForcePlugin, XForceIPReputationPlugin, \
@@ -82,8 +83,27 @@ class XForceIPReputationPluginTestCase(unittest.TestCase):
 
         self.assertEqual(len(self.plugin.ips), 1)
 
+    def test_report(self):
+        api_key = os.getenv('XFORCE_API_KEY')
+        api_password = os.getenv('XFORCE_PASSWORD')
+        if not api_key or not api_password:
+            raise unittest.SkipTest(
+                'XFORCE_API_KEY and XFORCE_API_PASSWORD environment '
+                'variables must be set to run this test')
 
-class XForceMD5ReputationPluginTestCase(unittest.TestCase):
+        self.plugin.activate()
+
+        mock_message = mock.Mock()
+        mock_message.body = {'text': '123.123.123.123'}
+        self.plugin.extract(mock_message)
+        self.plugin.report(mock_message)
+        mock_message.reply.assert_called_once_with(
+            'X-Force IP Reputation for 123.123.123.123 '
+            'Score: 1 Risk Level: VERY LOW Reason: Community feedback')
+        mock_message.react.assert_called_once_with('sunny')
+
+
+class XForceMD5(unittest.TestCase):
     def setUp(self):
         self.plugin = XForceMD5ReputationPlugin()
 
@@ -100,6 +120,21 @@ class XForceMD5ReputationPluginTestCase(unittest.TestCase):
 
         self.assertEqual(len(self.plugin.md5s), 1)
 
+    def test_report(self):
+        api_key = os.getenv('XFORCE_API_KEY')
+        api_password = os.getenv('XFORCE_PASSWORD')
+        if not api_key or not api_password:
+            raise unittest.SkipTest(
+                'XFORCE_API_KEY and XFORCE_API_PASSWORD environment '
+                'variables must be set to run this test')
+
+        self.plugin.activate()
+        mock_message = mock.Mock()
+        mock_message.body = {'text': '44d88612fea8a8f36de82e1278abb02f'}
+        self.plugin.extract(mock_message)
+        self.plugin.report(mock_message)
+        mock_message.react.assert_called_once_with('lightning')
+
 
 class XForceURLReputationPluginTestCase(unittest.TestCase):
     def setUp(self):
@@ -115,3 +150,24 @@ class XForceURLReputationPluginTestCase(unittest.TestCase):
             self.plugin.extract(Message())
         except NotImplementedError as e:
             self.fail(e.message)
+
+    def test_report(self):
+        api_key = os.getenv('XFORCE_API_KEY')
+        api_password = os.getenv('XFORCE_PASSWORD')
+        if not api_key or not api_password:
+            raise unittest.SkipTest(
+                'XFORCE_API_KEY and XFORCE_API_PASSWORD environment '
+                'variables must be set to run this test')
+
+        self.plugin.activate()
+        mock_message = mock.Mock()
+        mock_message.body = {'text': 'https://www.thepiratebay.se'}
+        self.plugin.extract(mock_message)
+        self.plugin.report(mock_message)
+        mock_message.reply.assert_called_once_with(
+            'X-Force URL Reputation for thepiratebay.se '
+            'Score: 10 Risk Level: VERY HIGH '
+            'Categories: Warez / Software Piracy, Illegal Activities, '
+            'Search Engines / Web Catalogues / Portals, '
+            'Computer Crime / Hacking')
+        mock_message.react.assert_called_once_with('tornado')
