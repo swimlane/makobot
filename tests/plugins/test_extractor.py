@@ -11,8 +11,11 @@ class IPExtractorTestCase(unittest.TestCase):
         class Message(object):
             body = {'text': '123.123.123.123 8.8.4.4 127.0.0.1'}
         self.extractor.extract(Message())
-        self.assertEqual(self.extractor.ips, set(['123.123.123.123', '8.8.4.4',
-                                      '127.0.0.1']))
+        expected = {
+            '123.123.123.123': None,
+            '8.8.4.4': None,
+            '127.0.0.1': None}
+        self.assertEqual(self.extractor.reports, expected)
 
 
 class MD5ExtractorTestCase(unittest.TestCase):
@@ -24,8 +27,8 @@ class MD5ExtractorTestCase(unittest.TestCase):
             body = {'text': '44d88612fea8a8f36de82e1278abb02f'}
         self.extractor.extract(Message())
         self.assertEqual(
-            self.extractor.md5s,
-            set(['44d88612fea8a8f36de82e1278abb02f']))
+            self.extractor.reports,
+            {'44d88612fea8a8f36de82e1278abb02f': None})
 
 
 class URLExtractorTestCase(unittest.TestCase):
@@ -37,5 +40,5 @@ class URLExtractorTestCase(unittest.TestCase):
             body = {'text': 'https://www.thepiratebay.se/uri/to/something'}
         self.extractor.extract(Message())
         self.assertEqual(
-            self.extractor.urls,
-            set(['https://www.thepiratebay.se']))
+            self.extractor.reports,
+            {'https://www.thepiratebay.se': None})

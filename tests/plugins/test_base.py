@@ -8,8 +8,7 @@ class PluginTestCase(unittest.TestCase):
         self.plugin= Plugin()
 
     def test_enabled(self):
-        with self.assertRaises(NotImplementedError):
-            self.plugin.enabled
+        self.assertFalse(self.plugin.enabled)
 
     def test_activate(self):
         with self.assertRaises(NotImplementedError):

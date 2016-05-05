@@ -9,7 +9,8 @@ class IPExtractor(object):
 
     def extract(self, message):
         """Extracts the IPs contained within the message text."""
-        self.ips = set(self.REGEX.findall(message.body.get('text', '')))
+        self.reports = dict([(ip, None) for ip in self.REGEX.findall(
+            message.body.get('text', ''))])
 
 
 class MD5Extractor(object):
@@ -17,7 +18,8 @@ class MD5Extractor(object):
 
     def extract(self, message):
         """Extracts all the MD5 checksums found in a message"""
-        self.md5s = set(self.REGEX.findall(message.body.get('text', '')))
+        self.reports = dict([(md5, None) for md5 in self.REGEX.findall(
+            message.body.get('text', ''))])
 
 
 class URLExtractor(object):
@@ -26,5 +28,5 @@ class URLExtractor(object):
     def extract(self, message):
         """Extracts the URLs contained within the message text"""
         text = message.body.get('text', '')
-        self.urls = set([clean_url(url)
-                         for url in self.REGEX.findall(text)])
+        self.reports = dict([(clean_url(url), None)
+                             for url in self.REGEX.findall(text)])

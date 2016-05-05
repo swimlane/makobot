@@ -30,7 +30,7 @@ class XForcePluginTestCase(unittest.TestCase):
             mock_settings.XFORCE_API_KEY,
             mock_settings.XFORCE_PASSWORD
         )
-        self.assertEqual(self.plugin.xforce, mock_xforce.return_value)
+        self.assertEqual(self.plugin.service, mock_xforce.return_value)
 
     def test_reaction(self):
         reactions = {
@@ -81,7 +81,7 @@ class XForceIPReputationPluginTestCase(unittest.TestCase):
         except NotImplementedError as e:
             self.fail(e.message)
 
-        self.assertEqual(len(self.plugin.ips), 1)
+        self.assertEqual(len(self.plugin.reports), 1)
 
     def test_report(self):
         api_key = os.getenv('XFORCE_API_KEY')
@@ -118,7 +118,7 @@ class XForceMD5(unittest.TestCase):
         except NotImplementedError as e:
             self.fail(e.message)
 
-        self.assertEqual(len(self.plugin.md5s), 1)
+        self.assertEqual(len(self.plugin.reports), 1)
 
     def test_report(self):
         api_key = os.getenv('XFORCE_API_KEY')
