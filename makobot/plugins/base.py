@@ -39,9 +39,9 @@ class Plugin(object):
         for subject, report in self.reports.items():
             if report:
                 if active:
-                    message.reply(self.format(report))
+                    message.reply(self.format(subject, report))
                 elif self.threshold_met(report):
-                    message.send(self.format(report))
+                    message.send(self.format(subject, report))
         self.react(message)
 
     def retrieve(self):
@@ -52,7 +52,7 @@ class Plugin(object):
         """
         raise NotImplementedError('Plugin retrieve method not implemented')
 
-    def format(self, report):
+    def format(self, subject, report):
         """
         Formats a report in some easily and quickly consumed format. This is
         typically called via the plugin's report method.

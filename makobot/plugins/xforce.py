@@ -71,7 +71,7 @@ class XForcePlugin(Plugin):
             return 'VERY HIGH'
 
 
-class XForceIPReputationPlugin(IPExtractor, XForcePlugin):
+class XForceIPPlugin(IPExtractor, XForcePlugin):
     def retrieve(self):
         for ip in self.reports:
             try:
@@ -81,10 +81,9 @@ class XForceIPReputationPlugin(IPExtractor, XForcePlugin):
                     ip, e.message))
                 continue
 
-    def format(self, report):
+    def format(self, subject, report):
         result = []
-        if 'ip' in report:
-            result.append('X-Force IP Reputation for %s' % report['ip'])
+        result.append('X-Force IP report for %s' % subject)
         if 'score' in report:
             result.append('Score: %s' % report['score'])
             result.append('Risk Level: %s' % self.risk_level(report['score']))
@@ -96,7 +95,7 @@ class XForceIPReputationPlugin(IPExtractor, XForcePlugin):
         return ' '.join(result)
 
 
-class XForceMD5ReputationPlugin(MD5Extractor, XForcePlugin):
+class XForceMD5Plugin(MD5Extractor, XForcePlugin):
     def retrieve(self):
         for md5 in self.reports:
             try:
@@ -108,10 +107,9 @@ class XForceMD5ReputationPlugin(MD5Extractor, XForcePlugin):
             if 'malware' in report:
                 self.reports[md5] = report['malware']
 
-    def format(self, report):
+    def format(self, subject, report):
         result = []
-        if 'md5' in report:
-            result.append('X-Force Malware Report for %s' % report['md5'])
+        result.append('X-Force MD5 report for %s' % subject)
         if 'family' in report:
             result.append('Malware Family: %s' % ', '.join(report['family']))
         if 'risk' in report:
@@ -128,7 +126,7 @@ class XForceMD5ReputationPlugin(MD5Extractor, XForcePlugin):
         message.react('lightning')
 
 
-class XForceURLReputationPlugin(URLExtractor, XForcePlugin):
+class XForceURLPlugin(URLExtractor, XForcePlugin):
     def retrieve(self):
         for url in self.reports:
             try:
@@ -140,10 +138,9 @@ class XForceURLReputationPlugin(URLExtractor, XForcePlugin):
             if 'result' in report:
                 self.reports[url] = report['result']
 
-    def format(self, report):
+    def format(self, subject, report):
         result = []
-        if 'url' in report:
-            result.append('X-Force URL Reputation for %s' % report['url'])
+        result.append('X-Force URL report for %s' % subject)
         if 'score' in report:
             result.append('Score: %s' % report['score'])
             result.append('Risk Level: %s' % self.risk_level(report['score']))
@@ -156,6 +153,6 @@ class XForceURLReputationPlugin(URLExtractor, XForcePlugin):
 
 
 # Register Plugins
-plugin_manager.register('ip', XForceIPReputationPlugin)
-plugin_manager.register('md5', XForceMD5ReputationPlugin)
-plugin_manager.register('url', XForceURLReputationPlugin)
+plugin_manager.register('ip', XForceIPPlugin)
+plugin_manager.register('md5', XForceMD5Plugin)
+plugin_manager.register('url', XForceURLPlugin)

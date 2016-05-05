@@ -1,9 +1,9 @@
 from requests import Session
 
 
-class Virustotal(object):
+class VirusTotal(object):
     def __init__(self, api_key):
-        self.base_url = 'https://www.virustotal.com/vtapi/v2/'
+        self.base_url = 'https://www.virustotal.com/vtapi/v2'
         self.session = Session()
         self.api_key = api_key
 

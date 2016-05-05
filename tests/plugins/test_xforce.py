@@ -2,8 +2,8 @@ import mock
 import os
 import unittest
 
-from makobot.plugins.xforce import XForcePlugin, XForceIPReputationPlugin, \
-    XForceMD5ReputationPlugin, XForceURLReputationPlugin
+from makobot.plugins.xforce import XForcePlugin, XForceIPPlugin, \
+    XForceMD5Plugin, XForceURLPlugin
 
 
 class XForcePluginTestCase(unittest.TestCase):
@@ -66,9 +66,9 @@ class XForcePluginTestCase(unittest.TestCase):
             self.assertEqual(self.plugin.risk_level(score), risk_level)
 
 
-class XForceIPReputationPluginTestCase(unittest.TestCase):
+class XForceIPPluginTestCase(unittest.TestCase):
     def setUp(self):
-        self.plugin = XForceIPReputationPlugin()
+        self.plugin = XForceIPPlugin()
 
     def test_extract(self):
         self.assertTrue(hasattr(self.plugin, 'extract'))
@@ -98,14 +98,14 @@ class XForceIPReputationPluginTestCase(unittest.TestCase):
         self.plugin.extract(mock_message)
         self.plugin.report(mock_message)
         mock_message.reply.assert_called_once_with(
-            'X-Force IP Reputation for 123.123.123.123 '
+            'X-Force IP report for 123.123.123.123 '
             'Score: 1 Risk Level: VERY LOW Reason: Community feedback')
         mock_message.react.assert_called_once_with('sunny')
 
 
 class XForceMD5(unittest.TestCase):
     def setUp(self):
-        self.plugin = XForceMD5ReputationPlugin()
+        self.plugin = XForceMD5Plugin()
 
     def test_extract(self):
         self.assertTrue(hasattr(self.plugin, 'extract'))
@@ -136,9 +136,9 @@ class XForceMD5(unittest.TestCase):
         mock_message.react.assert_called_once_with('lightning')
 
 
-class XForceURLReputationPluginTestCase(unittest.TestCase):
+class XForceURLPluginTestCase(unittest.TestCase):
     def setUp(self):
-        self.plugin = XForceURLReputationPlugin()
+        self.plugin = XForceURLPlugin()
 
     def test_extract(self):
         self.assertTrue(hasattr(self.plugin, 'extract'))
@@ -165,7 +165,7 @@ class XForceURLReputationPluginTestCase(unittest.TestCase):
         self.plugin.extract(mock_message)
         self.plugin.report(mock_message)
         mock_message.reply.assert_called_once_with(
-            'X-Force URL Reputation for thepiratebay.se '
+            'X-Force URL report for https://www.thepiratebay.se '
             'Score: 10 Risk Level: VERY HIGH '
             'Categories: Warez / Software Piracy, Illegal Activities, '
             'Search Engines / Web Catalogues / Portals, '

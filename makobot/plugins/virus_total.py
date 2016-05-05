@@ -1,3 +1,5 @@
+from __future__ import division
+
 import logging
 
 from makobot import slackbot_settings as settings
@@ -5,6 +7,7 @@ from makobot.libs.virustotal import VirusTotal
 
 from .base import Plugin
 from .extractor import IPExtractor
+from .manager import plugin_manager
 
 logger = logging.getLogger(__name__)
 
@@ -18,45 +21,49 @@ class VirusTotalPlugin(Plugin):
         self.service = VirusTotal(settings.VIRUSTOTAL_API_KEY)
 
 
-class VirusTotalIPReputationPlugin(IPExtractor, VirusTotalPlugin):
-    def report(self, message, active=True):
-        reports = self.retrieve_reports()
-        if not reports:
-            message.react('fog')
-            if active:
-                message.reply('No VirusTotal IP reputation reports for %s' %
-                              ', '.join(self.ips))
-            return
-        for report in reports:
-            if active:
-                message.reply(self.format_report(report))
-            else:
-                message.send(self.format_report(report))
-
-    def retrieve_reports(self):
-        reports = []
-        for ip in self.ips:
+class VirusTotalIPPlugin(IPExtractor, VirusTotalPlugin):
+    def retrieve(self):
+        for ip in self.reports:
             try:
-                reports.append(self.service.ip(ip))
+                report = self.service.ip(ip)
             except Exception as e:
-                logger.debug('Error retrieving IP reputation for %s: %s' % (
+                logger.debug('Error retrieving IP report for %s: %s' % (
                     ip, e.message))
-                break
-        return reports
+                continue
+            if 'response_code' in report and report['response_code'] == 1:
+                self.reports[ip] = report
 
-    def format_report(self, report):
+    def format(self, subject, report):
         result = []
-        if 'ip' in report:
-            result.append('X-Force IP Reputation for %s' % report['ip'])
-        if 'score' in report:
-            result.append('Score: %s' % report['score'])
-            result.append('Risk Level: %s' % self.risk_level(report['score']))
-        if 'reason' in report:
-            result.append('Reason: %s' % report['reason'])
-        if 'cats' in report and report['cats']:
-            result.append('Categories: %s' % ', '.join([
-                '%s (%s)' % (k, v) for k, v in report['cats'].items()]))
+        result.append('VirusTotal IP report for %s' % subject)
+        if 'as_owner' in report:
+            result.append('Owner: %s' % report['as_owner'])
+        if 'detected_referrer_samples' in report:
+            samples = report['detected_referrer_samples']
+            positives = sum([s['positives'] for s in samples])
+            total = sum([s['total'] for s in samples])
+            percentage = '{:.1%}'.format(positives / total)
+            result.append('Positives: %s/%s (%s)' % (
+                positives, total, percentage))
         return ' '.join(result)
 
+    def threshold_met(self, report):
+        if 'detected_referrer_samples' not in report:
+            return False
+        samples = report['detected_referrer_samples']
+        return sum([s['positives'] for s in samples]) > 0
+
+    def react(self, message):
+        if not any(self.reports.values()):
+            message.react('fog')
+            return
+        positives = 0
+        for subject, report in self.reports.items():
+            samples = report.get('detected_referrer_samples', [])
+            positives += sum([s['positives'] for s in samples])
+        if positives > 0:
+            message.react('lightning')
 
 
+# Register Plugins
+plugin_manager.register('ip', VirusTotalIPPlugin)
