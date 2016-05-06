@@ -20,6 +20,43 @@ class VirusTotalPlugin(Plugin):
     def activate(self):
         self.service = VirusTotal(settings.VIRUSTOTAL_API_KEY)
 
+    def reaction(self, score):
+        if score == 0:
+            return 'sunny'
+        elif 0 < score <= 0.02:
+            return 'mostly_sunny'
+        elif 0.02 < score <= 0.04:
+            return 'partly_sunny'
+        elif 0.04 < score <= 0.06:
+            return 'barely_sunny'
+        elif 0.06 < score <= 0.1:
+            return 'cloud'
+        elif 0.1 < score <= 0.15:
+            return 'rain_cloud'
+        elif 0.15 < score <= 0.2:
+            return 'thunder_cloud_and_rain'
+        elif 0.2 < score <= 0.8:
+            return 'lightning'
+        elif score > 0.8:
+            return 'tornado'
+
+    def risk_level(self, score):
+        try:
+            score = float(score)
+        except TypeError:
+            return 'UNKNOWN'
+
+        if score == 0:
+            return 'VERY LOW'
+        elif 0 < score <= 0.02:
+            return 'LOW'
+        elif 0.02 < score <= 0.2:
+            return 'MODERATE'
+        elif 0.2 < score <= 0.8:
+            return 'HIGH'
+        elif score > 0.8:
+            return 'VERY HIGH'
+
 
 class VirusTotalIPPlugin(IPExtractor, VirusTotalPlugin):
     def retrieve(self):
