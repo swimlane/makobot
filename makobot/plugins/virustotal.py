@@ -82,6 +82,8 @@ class VirusTotalIPPlugin(IPExtractor, VirusTotalPlugin):
             percentage = '{:.1%}'.format(positives / total)
             result.append('Positives: %s/%s (%s)' % (
                 positives, total, percentage))
+            result.append('Risk Level: %s' %
+                          self.risk_level(positives / total))
         return ' '.join(result)
 
     def threshold_met(self, report):
@@ -95,11 +97,12 @@ class VirusTotalIPPlugin(IPExtractor, VirusTotalPlugin):
             message.react('fog')
             return
         positives = 0
+        total = 0
         for subject, report in self.reports.items():
             samples = report.get('detected_referrer_samples', [])
             positives += sum([s['positives'] for s in samples])
-        if positives > 0:
-            message.react('lightning')
+            total += sum([s['total'] for s in samples])
+        message.react(self.reaction(positives / total))
 
 
 class VirusTotalMD5Plugin(MD5Extractor, VirusTotalPlugin):
@@ -121,6 +124,9 @@ class VirusTotalMD5Plugin(MD5Extractor, VirusTotalPlugin):
             percentage = '{:.1%}'.format(report['positives'] / report['total'])
             result.append('Positives: %s/%s (%s)' % (
                 report['positives'], report['total'], percentage))
+            result.append('Risk Level: %s' %
+                          self.risk_level(
+                              report['positives'] / report['total']))
         return ' '.join(result)
 
     def threshold_met(self, report):
@@ -134,8 +140,9 @@ class VirusTotalMD5Plugin(MD5Extractor, VirusTotalPlugin):
             return
         positives = sum([r['positives'] for _, r in self.reports.items()
                          if 'positives' in r])
-        if positives > 0:
-            message.react('lightning')
+        total = sum([r['total'] for _, r in self.reports.items()
+                     if 'total' in r])
+        message.react(self.reaction(positives / total))
 
 
 class VirusTotalURLPlugin(URLExtractor, VirusTotalPlugin):
@@ -157,6 +164,9 @@ class VirusTotalURLPlugin(URLExtractor, VirusTotalPlugin):
             percentage = '{:.1%}'.format(report['positives'] / report['total'])
             result.append('Positives: %s/%s (%s)' % (
                 report['positives'], report['total'], percentage))
+            result.append('Risk Level: %s' %
+                          self.risk_level(
+                              report['positives'] / report['total']))
         return ' '.join(result)
 
     def threshold_met(self, report):
@@ -170,8 +180,9 @@ class VirusTotalURLPlugin(URLExtractor, VirusTotalPlugin):
             return
         positives = sum([r['positives'] for _, r in self.reports.items()
                          if 'positives' in r])
-        if positives > 0:
-            message.react('lightning')
+        total = sum([r['total'] for _, r in self.reports.items()
+                     if 'total' in r])
+        message.react(self.reaction(positives / total))
 
 
 # Register Plugins

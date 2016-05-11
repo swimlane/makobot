@@ -95,8 +95,9 @@ class VirusTotalIPPluginTestCase(unittest.TestCase):
         mock_message.reply.assert_called_once_with(
             'VirusTotal IP report for 123.123.123.123 '
             'Owner: CNCGROUP IP network China169 Beijing Province Network '
-            'Positives: 4504/5446 (82.7%)')
-        mock_message.react.assert_called_once_with('lightning')
+            'Positives: 4504/5446 (82.7%) '
+            'Risk Level: VERY HIGH')
+        mock_message.react.assert_called_once_with('tornado')
 
 
 class VirusTotalMD5(unittest.TestCase):
@@ -125,8 +126,9 @@ class VirusTotalMD5(unittest.TestCase):
         self.plugin.report(mock_message)
         mock_message.reply.assert_called_once_with(
             'VirusTotal Md5 report for 44d88612fea8a8f36de82e1278abb02f '
-            'Positives: 55/57 (96.5%)')
-        mock_message.react.assert_called_once_with('lightning')
+            'Positives: 55/57 (96.5%) '
+            'Risk Level: VERY HIGH')
+        mock_message.react.assert_called_once_with('tornado')
 
 
 class VirusTotalURLPluginTestCase(unittest.TestCase):
@@ -154,5 +156,6 @@ class VirusTotalURLPluginTestCase(unittest.TestCase):
         self.plugin.report(mock_message)
         mock_message.reply.assert_called_once_with(
             'VirusTotal URL report for http://thepiratebay.se '
-            'Positives: 1/67 (1.5%)')
-        mock_message.react.assert_called_once_with('lightning')
+            'Positives: 1/67 (1.5%) '
+            'Risk Level: LOW')
+        mock_message.react.assert_called_once_with('mostly_sunny')
