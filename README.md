@@ -7,26 +7,7 @@ When you see thunder and lightning it's probably best to avoid. If the risk
 level is high enough, Makobot will provide additional details about the
 potential threat.
 
-### Installation
-
-You can install Makobot using pip:
-
-    pip install makobot
-
-Makobot uses the following environment variables for configuration:
-
- * *SLACK_TOKEN:* Your Slack bot user token, a bot user is recommended.
- * *XFORCE_API_KEY:* If using IBM X-Force as a data source, your API key.
- * *XFORCE_PASSWORD:* Your IBM X-Force API password.
-
-Currently only [IBM X-Force](https://exchange.xforce.ibmcloud.com/) is supported, but additional data sources will be
-added in the future.
-
-### Usage
-
-Starting makobot is simple, just run:
-
-    python -m makobot
+To get started check out [the documentation](https://swimlane.gitbooks.io/makobot/content/).
 
 ### Credits
 
