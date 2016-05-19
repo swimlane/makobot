@@ -3,6 +3,24 @@ import re
 from makobot.utils import clean_url
 
 
+class EmailExtractor(object):
+    REGEX = re.compile(r'[\w\.-]+@[\w\.-]+')
+
+    def extract(self, message):
+        """Extracts the email addresses contained within the message text."""
+        self.reports = dict([(email, None) for email in self.REGEX.findall(
+            message.body.get('text', ''))])
+
+
+class HostExtractor(object):
+    REGEX = re.compile(r'(?!-)[a-zA-Z\d-]{1,63}(?<!-)')
+
+    def extract(self, message):
+        """Extracts the hosts contained within the message text."""
+        self.reports = dict([(host, None) for host in self.REGEX.findall(
+            message.body.get('text', ''))])
+
+
 class IPExtractor(object):
     REGEX = re.compile(
         r'(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})')
