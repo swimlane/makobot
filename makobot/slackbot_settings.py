@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 
 API_TOKEN = os.getenv('SLACK_TOKEN')
@@ -10,7 +12,8 @@ PLUGINS = ['makobot.bots']
 
 THREATCONNECT_ACCESS_ID = os.getenv('THREATCONNECT_ACCESS_ID')
 THREATCONNECT_SECRET_KEY = os.getenv('THREATCONNECT_SECRET_KEY')
-THREATCONNECT_DEFAULT_ORG = os.getenv('THREATCONNECT_DEFAULT_ORG')
+THREATCONNECT_DEFAULT_ORG = os.getenv('THREATCONNECT_DEFAULT_ORG',
+                                      'ThreatConnect')
 THREATCONNECT_BASE_URL = os.getenv('THREATCONNECT_BASE_URL',
                                    'https://api.threatconnect.com')
 

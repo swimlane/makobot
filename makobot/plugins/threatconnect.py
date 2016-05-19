@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from __future__ import absolute_import
 
 import logging
@@ -19,8 +21,7 @@ class ThreatConnectPlugin(Plugin):
     @property
     def enabled(self):
         return settings.THREATCONNECT_ACCESS_ID is not None and \
-            settings.THREATCONNECT_SECRET_KEY is not None and \
-            settings.THREATCONNECT_DEFAULT_ORG is not None
+            settings.THREATCONNECT_SECRET_KEY is not None
 
     def activate(self):
         self.service = ThreatConnect(

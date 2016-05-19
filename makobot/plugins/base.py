@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from makobot.utils import reaction_to_int
 
 

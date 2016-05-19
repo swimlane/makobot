@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import re
 
 from makobot.utils import clean_url
