@@ -19,7 +19,7 @@ class PluginManager(object):
         logger.debug('Registering %s plugin: %s' % (category, plugin))
         self.plugins[category].add(plugin)
 
-    def evaluate(self, category, message):
+    def evaluate(self, category, message, active=True):
         logger.debug('Evaluating %s message: %s' % (
             category, message.body.get('text')))
         for plugin in self.plugins[category]:
@@ -29,7 +29,7 @@ class PluginManager(object):
                     category, plugin))
                 plugin.activate()
                 plugin.extract(message)
-                plugin.report(message)
+                plugin.report(message, active)
 
 
 plugin_manager = PluginManager()
