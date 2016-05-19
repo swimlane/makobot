@@ -1,3 +1,6 @@
+from makobot.utils import reaction_to_int
+
+
 class Plugin(object):
     @property
     def enabled(self):
@@ -42,7 +45,8 @@ class Plugin(object):
                     message.reply(self.format(subject, report))
                 elif self.threshold_met(report):
                     message.send(self.format(subject, report))
-        self.react(message)
+        reaction = self.react()
+        self.promote_reaction(message, reaction)
 
     def retrieve(self):
         """
@@ -70,10 +74,24 @@ class Plugin(object):
         """
         return False
 
-    def react(self, message):
+    def react(self):
         """
         Reacts to a report with an an emoticon of some kind. Typically a
         weather-based icon representing the severity of the risk is the most
         clearly understood.
         """
         pass
+
+    # FIXME: A more elegant solution for ensuring only one reaction.
+    def promote_reaction(self, message, reaction):
+        """
+        Determines if the latest reaction is more severe than the current one.
+        Only the most severe reaction should be used.
+        """
+        if not hasattr(message, 'mako_reaction'):
+            message.mako_reaction = 'fog'
+        if reaction:
+            current = reaction_to_int(message.mako_reaction)
+            latest = reaction_to_int(reaction)
+            if latest > current:
+                message.mako_reaction = reaction

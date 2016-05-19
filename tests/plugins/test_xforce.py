@@ -100,7 +100,7 @@ class XForceIPPluginTestCase(unittest.TestCase):
         mock_message.reply.assert_called_once_with(
             'X-Force IP report for 123.123.123.123 '
             'Score: 1 Risk Level: VERY LOW Reason: Community feedback')
-        mock_message.react.assert_called_once_with('sunny')
+        self.assertEqual(mock_message.mako_reaction, 'sunny')
 
 
 class XForceMD5(unittest.TestCase):
@@ -133,7 +133,7 @@ class XForceMD5(unittest.TestCase):
         mock_message.body = {'text': '44d88612fea8a8f36de82e1278abb02f'}
         self.plugin.extract(mock_message)
         self.plugin.report(mock_message)
-        mock_message.react.assert_called_once_with('lightning')
+        self.assertEqual(mock_message.mako_reaction, 'lightning')
 
 
 class XForceURLPluginTestCase(unittest.TestCase):
@@ -170,4 +170,4 @@ class XForceURLPluginTestCase(unittest.TestCase):
             'Categories: Warez / Software Piracy, Illegal Activities, '
             'Search Engines / Web Catalogues / Portals, '
             'Computer Crime / Hacking')
-        mock_message.react.assert_called_once_with('tornado')
+        self.assertEqual(mock_message.mako_reaction, 'tornado')

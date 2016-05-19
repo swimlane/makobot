@@ -30,6 +30,8 @@ class PluginManager(object):
                 plugin.activate()
                 plugin.extract(message)
                 plugin.report(message, active)
+        if hasattr(message, 'mako_reaction'):
+            message.react(message.mako_reaction)
 
 
 plugin_manager = PluginManager()

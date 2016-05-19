@@ -92,9 +92,8 @@ class VirusTotalIPPlugin(IPExtractor, VirusTotalPlugin):
         samples = report['detected_referrer_samples']
         return sum([s['positives'] for s in samples]) > 0
 
-    def react(self, message):
+    def react(self):
         if not any(self.reports.values()):
-            message.react('fog')
             return
         positives = 0
         total = 0
@@ -102,7 +101,7 @@ class VirusTotalIPPlugin(IPExtractor, VirusTotalPlugin):
             samples = report.get('detected_referrer_samples', [])
             positives += sum([s['positives'] for s in samples])
             total += sum([s['total'] for s in samples])
-        message.react(self.reaction(positives / total))
+        return self.reaction(positives / total)
 
 
 class VirusTotalMD5Plugin(MD5Extractor, VirusTotalPlugin):
@@ -134,15 +133,14 @@ class VirusTotalMD5Plugin(MD5Extractor, VirusTotalPlugin):
             return False
         return report['positives'] > 0
 
-    def react(self, message):
+    def react(self):
         if not any(self.reports.values()):
-            message.react('fog')
             return
         positives = sum([r['positives'] for _, r in self.reports.items()
                          if 'positives' in r])
         total = sum([r['total'] for _, r in self.reports.items()
                      if 'total' in r])
-        message.react(self.reaction(positives / total))
+        return self.reaction(positives / total)
 
 
 class VirusTotalURLPlugin(URLExtractor, VirusTotalPlugin):
@@ -174,15 +172,14 @@ class VirusTotalURLPlugin(URLExtractor, VirusTotalPlugin):
             return False
         return report['positives'] > 0
 
-    def react(self, message):
+    def react(self):
         if not any(self.reports.values()):
-            message.react('fog')
             return
         positives = sum([r['positives'] for _, r in self.reports.items()
                          if 'positives' in r])
         total = sum([r['total'] for _, r in self.reports.items()
                      if 'total' in r])
-        message.react(self.reaction(positives / total))
+        return self.reaction(positives / total)
 
 
 # Register Plugins

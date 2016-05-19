@@ -25,13 +25,12 @@ class XForcePlugin(Plugin):
     def threshold_met(self, report):
         return 'score' in report and report['score'] >= 3
 
-    def react(self, message):
+    def react(self):
         if not any(self.reports.values()):
-            message.react('fog')
             return
         score = max([r['score'] for r in self.reports.values()
                      if r and 'score' in r])
-        message.react(self.reaction(score))
+        return self.reaction(score)
 
     def reaction(self, score):
         if score < 2:
@@ -119,11 +118,10 @@ class XForceMD5Plugin(MD5Extractor, XForcePlugin):
     def threshold_met(self, report):
         return True
 
-    def react(self, message):
+    def react(self):
         if not any(self.reports.values()):
-            message.react('fog')
             return
-        message.react('lightning')
+        return 'lightning'
 
 
 class XForceURLPlugin(URLExtractor, XForcePlugin):
