@@ -13,11 +13,12 @@ class EmailExtractor(object):
 
 
 class HostExtractor(object):
-    REGEX = re.compile(r'(?!-)[a-zA-Z\d-]{1,63}(?<!-)')
+    # TODO: This needs to be improved.
+    REGEX = re.compile(r'(?!-)[\w\.-]+(?<!-)')
 
     def extract(self, message):
         """Extracts the hosts contained within the message text."""
-        self.reports = dict([(host, None) for host in self.REGEX.findall(
+        self.reports = dict([(h.rstrip('.'), None) for h in self.REGEX.findall(
             message.body.get('text', ''))])
 
 
