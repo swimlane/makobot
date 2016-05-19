@@ -24,7 +24,7 @@ class PluginManager(object):
     def evaluate(self, category, message, active=True):
         logger.debug('Evaluating %s message: %s' % (
             category, message.body.get('text')))
-        for plugin in self.plugins.get(category, []):
+        for plugin in self.plugins[category]:
             plugin = plugin()
             if plugin.enabled:
                 logger.debug('Evaluating %s message with %s' % (
