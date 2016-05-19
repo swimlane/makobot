@@ -8,7 +8,8 @@ from threatconnect.Config.IndicatorType import IndicatorType
 from makobot import slackbot_settings as settings
 
 from .base import Plugin
-from .extractor import EmailExtractor
+from .extractor import EmailExtractor, HostExtractor, IPExtractor, \
+    MD5Extractor, URLExtractor
 from .manager import plugin_manager
 
 logger = logging.getLogger(__name__)
@@ -114,9 +115,121 @@ class ThreatConnectEmailPlugin(EmailExtractor, ThreatConnectPlugin):
             result.append('Risk Level: %s' %
                           self.risk_level(report.rating))
         if report.confidence:
-            result.append('Confidence: %s' % report.confidence)
+            result.append('Confidence: %s%%' % report.confidence)
+        return ' '.join(result)
+
+
+class ThreatConnectHostPlugin(HostExtractor, ThreatConnectPlugin):
+    def retrieve(self):
+        for host in self.reports:
+            try:
+                report = self.retrieve_indicator(
+                    host, IndicatorType.HOSTS)
+            except Exception as e:
+                logger.debug('Error retrieving host report for %s: %s' % (
+                    host, e.message))
+                continue
+            if report:
+                self.reports[host] = report
+
+    def format(self, subject, report):
+        result = []
+        result.append('ThreatConnect host report for %s' % subject)
+        if report.description:
+            result.append('Description: %s' % report.description)
+        if report.rating:
+            result.append('Rating: %s' % report.rating)
+            result.append('Risk Level: %s' %
+                          self.risk_level(report.rating))
+        if report.confidence:
+            result.append('Confidence: %s%%' % report.confidence)
+        return ' '.join(result)
+
+
+class ThreatConnectIPPlugin(IPExtractor, ThreatConnectPlugin):
+    def retrieve(self):
+        for ip in self.reports:
+            try:
+                report = self.retrieve_indicator(
+                    ip, IndicatorType.ADDRESSES)
+            except Exception as e:
+                logger.debug('Error retrieving IP report for %s: %s' % (
+                    ip, e.message))
+                continue
+            if report:
+                self.reports[ip] = report
+
+    def format(self, subject, report):
+        result = []
+        result.append('ThreatConnect IP report for %s' % subject)
+        if report.description:
+            result.append('Description: %s' % report.description)
+        if report.rating:
+            result.append('Rating: %s' % report.rating)
+            result.append('Risk Level: %s' %
+                          self.risk_level(report.rating))
+        if report.confidence:
+            result.append('Confidence: %s%%' % report.confidence)
+        return ' '.join(result)
+
+
+class ThreatConnectMD5Plugin(MD5Extractor, ThreatConnectPlugin):
+    def retrieve(self):
+        for md5 in self.reports:
+            try:
+                report = self.retrieve_indicator(
+                    md5, IndicatorType.FILES)
+            except Exception as e:
+                logger.debug('Error retrieving MD5 report for %s: %s' % (
+                    md5, e.message))
+                continue
+            if report:
+                self.reports[md5] = report
+
+    def format(self, subject, report):
+        result = []
+        result.append('ThreatConnect MD5 report for %s' % subject)
+        if report.description:
+            result.append('Description: %s' % report.description)
+        if report.rating:
+            result.append('Rating: %s' % report.rating)
+            result.append('Risk Level: %s' %
+                          self.risk_level(report.rating))
+        if report.confidence:
+            result.append('Confidence: %s%%' % report.confidence)
+        return ' '.join(result)
+
+
+class ThreatConnectURLPlugin(URLExtractor, ThreatConnectPlugin):
+    def retrieve(self):
+        for url in self.reports:
+            try:
+                report = self.retrieve_indicator(
+                    url, IndicatorType.URLS)
+            except Exception as e:
+                logger.debug('Error retrieving URL report for %s: %s' % (
+                    url, e.message))
+                continue
+            if report:
+                self.reports[url] = report
+
+    def format(self, subject, report):
+        result = []
+        result.append('ThreatConnect URL report for %s' % subject)
+        if report.description:
+            result.append('Description: %s' % report.description)
+        if report.rating:
+            result.append('Rating: %s' % report.rating)
+            result.append('Risk Level: %s' %
+                          self.risk_level(report.rating))
+        if report.confidence:
+            result.append('Confidence: %s%%' % report.confidence)
         return ' '.join(result)
 
 
 # Register Plugins
 plugin_manager.register('email', ThreatConnectEmailPlugin)
+plugin_manager.register('host', ThreatConnectHostPlugin)
+plugin_manager.register('ip', ThreatConnectIPPlugin)
+plugin_manager.register('md5', ThreatConnectMD5Plugin)
+plugin_manager.register('url', ThreatConnectURLPlugin)

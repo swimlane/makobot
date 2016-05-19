@@ -2,6 +2,8 @@ import os
 
 API_TOKEN = os.getenv('SLACK_TOKEN')
 
+DEBUG = 'DEBUG' in os.environ
+
 default_reply = "Sorry, I didn't understand you"
 
 PLUGINS = ['makobot.bots']
