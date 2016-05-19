@@ -2,10 +2,8 @@ from __future__ import absolute_import
 
 import logging
 
-try:
-    from threatconnect.Config.IndicatorType import IndicatorType
-except ImportError:
-    IndicatorType = None
+from threatconnect import ThreatConnect
+from threatconnect.Config.IndicatorType import IndicatorType
 
 from makobot import slackbot_settings as settings
 
@@ -24,12 +22,6 @@ class ThreatConnectPlugin(Plugin):
             settings.THREATCONNECT_DEFAULT_ORG is not None
 
     def activate(self):
-        try:
-            from threatconnect import ThreatConnect  # noqa
-        except ImportError:
-            raise ImportError(
-                'ThreatConnect client must be installed to use this plugin: '
-                'pip install threatconnect')
         self.service = ThreatConnect(
             settings.THREATCONNECT_ACCESS_ID,
             settings.THREATCONNECT_SECRET_KEY,

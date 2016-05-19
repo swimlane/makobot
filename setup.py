@@ -11,7 +11,7 @@ setup(
     url='https://github.com/swimlane/makobot',
     version='0.1.1',
     license='MIT',
-    install_requires=['requests', 'slackbot'],
+    install_requires=['requests', 'slackbot', 'threatconnect'],
     tests_require=['mock', 'nose'],
     test_suite='nose.collector',
     packages=find_packages(exclude=('tests')),
