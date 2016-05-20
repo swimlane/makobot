@@ -38,9 +38,6 @@ class Plugin(object):
         messages that meet a certain threshold to reduce noise.
         """
         self.retrieve()
-        if not any(self.reports.values()) and active:
-            message.reply('No %s reports for %s' % (
-                          self.PLUGIN_NAME, ', '.join(self.reports.keys())))
         for subject, report in self.reports.items():
             if report:
                 if active:

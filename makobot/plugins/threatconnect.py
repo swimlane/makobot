@@ -18,8 +18,6 @@ logger = logging.getLogger(__name__)
 
 
 class ThreatConnectPlugin(Plugin):
-    PLUGIN_NAME = 'ThreatConnect'
-
     @property
     def enabled(self):
         return settings.THREATCONNECT_ACCESS_ID is not None and \

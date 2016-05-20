@@ -13,8 +13,6 @@ logger = logging.getLogger(__name__)
 
 
 class XForcePlugin(Plugin):
-    PLUGIN_NAME = 'X-Force'
-
     @property
     def enabled(self):
         return settings.XFORCE_API_KEY is not None and \
