@@ -7,7 +7,7 @@ from makobot.plugins.manager import plugin_manager
 
 
 @respond_to(MD5Extractor.REGEX)
-def md5_active(message):
+def md5_active(message, *args):
     """
     Actively respond to direct messages with malware reports. The active
     version of this bot is meant to be more of a query service.
@@ -16,7 +16,7 @@ def md5_active(message):
 
 
 @listen_to(MD5Extractor.REGEX)
-def md5_passive(message):
+def md5_passive(message, *args):
     """
     Passively monitor channels and report malware when found. The passive
     version of this bot is meant to be a monitoring service.

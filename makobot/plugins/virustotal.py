@@ -81,11 +81,12 @@ class VirusTotalIPPlugin(IPExtractor, VirusTotalPlugin):
             samples = report['detected_referrer_samples']
             positives = sum([s['positives'] for s in samples])
             total = sum([s['total'] for s in samples])
-            percentage = '{:.1%}'.format(positives / total)
+            percentage = '{:.1%}'.format(positives / total) if total else 'N/A'
             result.append('Positives: %s/%s (%s)' % (
                 positives, total, percentage))
+            risk_level = self.risk_level(positives / total) if total else 'N/A'
             result.append('Risk Level: %s' %
-                          self.risk_level(positives / total))
+                          risk_level)
         return ' '.join(result)
 
     def threshold_met(self, report):
@@ -103,6 +104,8 @@ class VirusTotalIPPlugin(IPExtractor, VirusTotalPlugin):
             samples = report.get('detected_referrer_samples', [])
             positives += sum([s['positives'] for s in samples])
             total += sum([s['total'] for s in samples])
+        if not total:
+            return
         return self.reaction(positives / total)
 
 
@@ -122,12 +125,14 @@ class VirusTotalMD5Plugin(MD5Extractor, VirusTotalPlugin):
         result = []
         result.append('VirusTotal Md5 report for %s' % subject)
         if 'positives' in report and 'total' in report:
-            percentage = '{:.1%}'.format(report['positives'] / report['total'])
+            positives = report['positives']
+            total = report['total']
+            percentage = '{:.1%}'.format(positives / total) if total else 'N/A'
             result.append('Positives: %s/%s (%s)' % (
-                report['positives'], report['total'], percentage))
+                positives, total, percentage))
+            risk_level = self.risk_level(positives / total) if total else 'N/A'
             result.append('Risk Level: %s' %
-                          self.risk_level(
-                              report['positives'] / report['total']))
+                          risk_level)
         return ' '.join(result)
 
     def threshold_met(self, report):
@@ -142,6 +147,8 @@ class VirusTotalMD5Plugin(MD5Extractor, VirusTotalPlugin):
                          if 'positives' in r])
         total = sum([r['total'] for _, r in self.reports.items()
                      if 'total' in r])
+        if not total:
+            return
         return self.reaction(positives / total)
 
 
@@ -161,12 +168,14 @@ class VirusTotalURLPlugin(URLExtractor, VirusTotalPlugin):
         result = []
         result.append('VirusTotal URL report for %s' % subject)
         if 'positives' in report and 'total' in report:
-            percentage = '{:.1%}'.format(report['positives'] / report['total'])
+            positives = report['positives']
+            total = report['total']
+            percentage = '{:.1%}'.format(positives / total) if total else 'N/A'
             result.append('Positives: %s/%s (%s)' % (
-                report['positives'], report['total'], percentage))
+                positives, total, percentage))
+            risk_level = self.risk_level(positives / total) if total else 'N/A'
             result.append('Risk Level: %s' %
-                          self.risk_level(
-                              report['positives'] / report['total']))
+                          risk_level)
         return ' '.join(result)
 
     def threshold_met(self, report):
@@ -181,6 +190,8 @@ class VirusTotalURLPlugin(URLExtractor, VirusTotalPlugin):
                          if 'positives' in r])
         total = sum([r['total'] for _, r in self.reports.items()
                      if 'total' in r])
+        if not total:
+            return
         return self.reaction(positives / total)
 
 
