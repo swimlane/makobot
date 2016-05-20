@@ -46,12 +46,11 @@ class ThreatConnectPlugin(Plugin):
         return hasattr(report, 'rating') and report.rating >= 1 and \
             hasattr(report, 'confidence') and report.confidence >= 50
 
-    def react(self, message):
+    def react(self):
         if not any(self.reports.values()):
-            message.react('fog')
             return
         rating = max([r.rating for r in self.reports.values() if r.rating])
-        message.react(self.reaction(rating))
+        return self.reaction(rating)
 
     def reaction(self, score):
         if score == 0:
