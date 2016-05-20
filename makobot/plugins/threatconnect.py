@@ -49,7 +49,8 @@ class ThreatConnectPlugin(Plugin):
     def react(self):
         if not any(self.reports.values()):
             return
-        rating = max([r.rating for r in self.reports.values() if r.rating])
+        rating = max([r.rating for r in self.reports.values()
+                      if r and hasattr(r, 'rating') and r.rating])
         return self.reaction(rating)
 
     def reaction(self, score):
