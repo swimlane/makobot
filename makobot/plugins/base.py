@@ -87,10 +87,8 @@ class Plugin(object):
         Determines if the latest reaction is more severe than the current one.
         Only the most severe reaction should be used.
         """
-        if not hasattr(message, 'mako_reaction'):
-            message.mako_reaction = 'fog'
         if reaction:
-            current = reaction_to_int(message.mako_reaction)
+            current = reaction_to_int(getattr(message, 'mako_reaction', 'fog'))
             latest = reaction_to_int(reaction)
             if latest > current:
                 message.mako_reaction = reaction
