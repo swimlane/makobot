@@ -15,6 +15,8 @@ logger = logging.getLogger(__name__)
 
 
 class VirusTotalPlugin(Plugin):
+    PLUGIN_NAME = 'VirusTotal'
+
     @property
     def enabled(self):
         return settings.VIRUSTOTAL_API_KEY is not None

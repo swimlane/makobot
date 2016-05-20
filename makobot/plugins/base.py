@@ -39,8 +39,8 @@ class Plugin(object):
         """
         self.retrieve()
         if not any(self.reports.values()) and active:
-            message.reply('No reports for %s' %
-                          ', '.join(self.reports.keys()))
+            message.reply('No %s reports for %s' %
+                          self.PLUGIN_NAME, ', '.join(self.reports.keys()))
         for subject, report in self.reports.items():
             if report:
                 if active:
