@@ -15,6 +15,9 @@ class XForce(object):
         r.raise_for_status()
         return r.json()
 
+    def host(self, host):
+        return self.get('whois', host)
+
     def ip(self, ip):
         return self.get('ipr', ip)
 

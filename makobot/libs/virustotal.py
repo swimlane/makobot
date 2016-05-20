@@ -16,8 +16,8 @@ class VirusTotal(object):
         r.raise_for_status()
         return r.json()
 
-    def domain(self, domain):
-        return self.get('domain', 'report', domain=domain)
+    def host(self, host):
+        return self.get('domain', 'report', domain=host)
 
     def ip(self, ip):
         return self.get('ip-address', 'report', ip=ip)
