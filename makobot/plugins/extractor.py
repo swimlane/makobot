@@ -2,7 +2,7 @@
 
 import re
 
-from makobot.utils import clean_url
+from makobot.utils import clean_url, host_only
 
 
 class EmailExtractor(object):
@@ -15,12 +15,11 @@ class EmailExtractor(object):
 
 
 class HostExtractor(object):
-    # TODO: This needs to be improved.
-    REGEX = re.compile(r'(?!-)[\w\.-]+(?<!-)')
+    REGEX = re.compile(r'(?:https?://[^\s]+)')
 
     def extract(self, message):
         """Extracts the hosts contained within the message text."""
-        self.reports = dict([(h.rstrip('.'), None) for h in self.REGEX.findall(
+        self.reports = dict([(host_only(h), None) for h in self.REGEX.findall(
             message.body.get('text', ''))])
 
 

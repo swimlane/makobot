@@ -13,6 +13,17 @@ def clean_url(url):
     return '{url.scheme}://{url.netloc}'.format(url=parsed_url)
 
 
+def host_only(url):
+    """Returns only the host of URL, minus Slack formatting"""
+    url = url.lstrip('<').rstrip('>')
+    host = urlparse(url).netloc
+    if '@' in host:
+        host = host.split('@')[-1]
+    if ':' in host:
+        host = host.split(':')[0]
+    return host
+
+
 def reaction_to_int(reaction):
     reaction_map = {
         'fog': 0,
