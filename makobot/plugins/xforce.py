@@ -132,7 +132,7 @@ class XForceURLPlugin(URLExtractor, XForcePlugin):
             try:
                 report = self.service.url(url)
             except Exception as e:
-                logger.error('Error retrieving URL reportfor %s: %s' % (
+                logger.error('Error retrieving URL report for %s: %s' % (
                     url, e.message))
                 continue
             if 'result' in report:

@@ -15,7 +15,7 @@ class EmailExtractor(object):
 
 
 class HostExtractor(object):
-    REGEX = re.compile(r'(?:https?://[^\s]+)')
+    REGEX = re.compile(r'(?:https?://[^\s\|]+)')
 
     def extract(self, message):
         """Extracts the hosts contained within the message text."""
@@ -43,7 +43,7 @@ class MD5Extractor(object):
 
 
 class URLExtractor(object):
-    REGEX = re.compile(r'(?:https?://[^\s]+)')
+    REGEX = re.compile(r'(?:https?://[^\s\|]+)')
 
     def extract(self, message):
         """Extracts the URLs contained within the message text"""

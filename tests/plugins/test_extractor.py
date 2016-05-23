@@ -25,7 +25,7 @@ class HostExtractorTestCase(unittest.TestCase):
 
     def test_extract(self):
         mock_message = mock.Mock()
-        mock_message.body = {'text': 'www.google.com foo.bar.net'}
+        mock_message.body = {'text': 'http://www.google.com http://foo.bar.net'}
         self.extractor.extract(mock_message)
         expected = {
             'www.google.com': None,

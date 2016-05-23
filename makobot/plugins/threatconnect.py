@@ -40,7 +40,7 @@ class ThreatConnectPlugin(Plugin):
         f.add_owner(['Common Community'])
         f.add_indicator(indicator)
         results = sorted(indicators.retrieve(), key=lambda x: x.confidence)
-        return results[-1]
+        return results[-1] if results else None
 
     def threshold_met(self, report):
         return hasattr(report, 'rating') and report.rating >= 1 and \
