@@ -59,6 +59,5 @@ docs/_build/
 target/
 .env
 *.png
-Dockerfile
 Makefile
 Procfile
