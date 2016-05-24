@@ -1,6 +1,6 @@
 version: '2'
 services:
-  makobot:
+  bot:
     build: .
     env_file: .env
     environment:
