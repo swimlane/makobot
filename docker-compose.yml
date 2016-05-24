@@ -2,3 +2,6 @@ version: '2'
 services:
   makobot:
     build: .
+    env_file: .env
+    environment:
+      - SLACK_TOKEN
