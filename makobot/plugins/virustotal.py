@@ -67,7 +67,7 @@ class VirusTotalIPPlugin(IPExtractor, VirusTotalPlugin):
                 report = self.service.ip(ip)
             except Exception as e:
                 logger.debug('Error retrieving IP report for %s: %s' % (
-                    ip, e.message))
+                    ip, str(e)))
                 continue
             if 'response_code' in report and report['response_code'] == 1:
                 self.reports[ip] = report
@@ -116,7 +116,7 @@ class VirusTotalMD5Plugin(MD5Extractor, VirusTotalPlugin):
                 report = self.service.md5(md5)
             except Exception as e:
                 logger.error('Error retrievingMD5 report for %s: %s' % (
-                    md5, e.message))
+                    md5, str(e)))
                 continue
             if 'response_code' in report and report['response_code'] == 1:
                 self.reports[md5] = report
@@ -159,7 +159,7 @@ class VirusTotalURLPlugin(URLExtractor, VirusTotalPlugin):
                 report = self.service.url(url)
             except Exception as e:
                 logger.error('Error retrieving URL report for %s: %s' % (
-                    url, e.message))
+                    url, str(e)))
                 continue
             if 'response_code' in report and report['response_code'] == 1:
                 self.reports[url] = report

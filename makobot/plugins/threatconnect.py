@@ -101,7 +101,7 @@ class ThreatConnectEmailPlugin(EmailExtractor, ThreatConnectPlugin):
                     email, IndicatorType.EMAIL_ADDRESSES)
             except Exception as e:
                 logger.debug('Error retrieving email report for %s: %s' % (
-                    email, e.message))
+                    email, str(e)))
                 continue
             if report:
                 self.reports[email] = report
@@ -128,7 +128,7 @@ class ThreatConnectHostPlugin(HostExtractor, ThreatConnectPlugin):
                     host, IndicatorType.HOSTS)
             except Exception as e:
                 logger.debug('Error retrieving host report for %s: %s' % (
-                    host, e.message))
+                    host, str(e)))
                 continue
             if report:
                 self.reports[host] = report
@@ -155,7 +155,7 @@ class ThreatConnectIPPlugin(IPExtractor, ThreatConnectPlugin):
                     ip, IndicatorType.ADDRESSES)
             except Exception as e:
                 logger.debug('Error retrieving IP report for %s: %s' % (
-                    ip, e.message))
+                    ip, str(e)))
                 continue
             if report:
                 self.reports[ip] = report
@@ -182,7 +182,7 @@ class ThreatConnectMD5Plugin(MD5Extractor, ThreatConnectPlugin):
                     md5, IndicatorType.FILES)
             except Exception as e:
                 logger.debug('Error retrieving MD5 report for %s: %s' % (
-                    md5, e.message))
+                    md5, str(e)))
                 continue
             if report:
                 self.reports[md5] = report
@@ -209,7 +209,7 @@ class ThreatConnectURLPlugin(URLExtractor, ThreatConnectPlugin):
                     url, IndicatorType.URLS)
             except Exception as e:
                 logger.debug('Error retrieving URL report for %s: %s' % (
-                    url, e.message))
+                    url, str(e)))
                 continue
             if report:
                 self.reports[url] = report

@@ -2,7 +2,6 @@ version: '2'
 services:
   bot:
     build: .
-    command: python -m makobot
     env_file: .env
     environment:
       - SLACK_TOKEN

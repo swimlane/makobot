@@ -79,7 +79,7 @@ class XForceIPPlugin(IPExtractor, XForcePlugin):
                 self.reports[ip] = self.service.ip(ip)
             except Exception as e:
                 logger.debug('Error retrieving IP report for %s: %s' % (
-                    ip, e.message))
+                    ip, str(e)))
                 continue
 
     def format(self, subject, report):
@@ -103,7 +103,7 @@ class XForceMD5Plugin(MD5Extractor, XForcePlugin):
                 report = self.service.md5(md5)
             except Exception as e:
                 logger.error('Error retrieving MD5 report for %s: %s' % (
-                    md5, e.message))
+                    md5, str(e)))
                 continue
             if 'malware' in report:
                 self.reports[md5] = report['malware']
@@ -133,7 +133,7 @@ class XForceURLPlugin(URLExtractor, XForcePlugin):
                 report = self.service.url(url)
             except Exception as e:
                 logger.error('Error retrieving URL report for %s: %s' % (
-                    url, e.message))
+                    url, str(e)))
                 continue
             if 'result' in report:
                 self.reports[url] = report['result']
