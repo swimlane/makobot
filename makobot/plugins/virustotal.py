@@ -20,6 +20,7 @@ class VirusTotalPlugin(Plugin):
         return settings.VIRUSTOTAL_API_KEY is not None
 
     def activate(self):
+        logger.debug('Activating %s' % self.__class__.__name__)
         self.service = VirusTotal(settings.VIRUSTOTAL_API_KEY)
 
     def reaction(self, score):

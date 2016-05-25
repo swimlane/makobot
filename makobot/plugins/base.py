@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import logging
+
 from makobot.utils import reaction_to_int
+
+logger = logging.getLogger(__name__)
 
 
 class Plugin(object):
@@ -38,12 +42,24 @@ class Plugin(object):
         messages that meet a certain threshold to reduce noise.
         """
         self.retrieve()
+        logger.debug('Found %s reports' %
+                     len([r for r in self.reports.values() if r]))
         for subject, report in self.reports.items():
             if report:
+                logger.debug('Have a report for %s: %s' % (subject, report))
                 if active:
+                    logger.debug('Bot is active, reporting...')
                     message.reply(self.format(subject, report))
                 elif self.threshold_met(report):
+                    logger.debug(
+                        'Bot passive, but threshold met, reporting...')
                     message.send(self.format(subject, report))
+                else:
+                    logger.debug(
+                        'Bot passive and threshold not met, skipping...')
+            else:
+                logger.debug('No report for %s, skipping...' % subject)
+        # TODO: Move this to a wrapper class
         reaction = self.react()
         self.promote_reaction(message, reaction)
 

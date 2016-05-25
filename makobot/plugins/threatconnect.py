@@ -24,6 +24,7 @@ class ThreatConnectPlugin(Plugin):
             settings.THREATCONNECT_SECRET_KEY is not None
 
     def activate(self):
+        logger.debug('Activating %s' % self.__class__.__name__)
         self.service = ThreatConnect(
             settings.THREATCONNECT_ACCESS_ID,
             settings.THREATCONNECT_SECRET_KEY,
