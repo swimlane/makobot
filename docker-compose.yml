@@ -5,3 +5,4 @@ services:
     env_file: .env
     environment:
       - SLACK_TOKEN
+    restart: always
