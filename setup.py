@@ -9,7 +9,7 @@ setup(
     author='Swimlane LLC',
     author_email='info@swimlane.com',
     url='https://github.com/swimlane/makobot',
-    version='0.3.5',
+    version='0.3.6',
     license='MIT',
     install_requires=['requests', 'slackbot', 'threatconnect'],
     tests_require=['mock', 'nose'],
