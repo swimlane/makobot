@@ -40,7 +40,7 @@ class ThreatConnectPlugin(Plugin):
             f = indicators.add_filter()
         f.add_owner(['Common Community'])
         f.add_indicator(indicator)
-        results = sorted(indicators.retrieve(), key=lambda x: x.confidence)
+        results = sorted(indicators.retrieve(), key=lambda x: x.rating)
         return results[-1] if results else None
 
     def threshold_met(self, report):
