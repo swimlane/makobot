@@ -8,6 +8,8 @@ DEBUG = 'DEBUG' in os.environ
 
 default_reply = "Sorry, I didn't understand you"
 
+ERRORS_TO = os.getenv('ERRORS_TO')
+
 PLUGINS = ['makobot.bots']
 
 THREATCONNECT_ACCESS_ID = os.getenv('THREATCONNECT_ACCESS_ID')
