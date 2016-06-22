@@ -1,5 +1,5 @@
 ![Makobot](https://raw.githubusercontent.com/Swimlane/makobot/master/logo.png) 
-[![Code Climate](https://codeclimate.com/github/swimlane/makobot/badges/gpa.svg)](https://codeclimate.com/github/swimlane/makobot) [![Test Coverage](https://codeclimate.com/github/swimlane/makobot/badges/coverage.svg)](https://codeclimate.com/github/swimlane/makobot/coverage)
+[![Build Status](https://travis-ci.org/swimlane/makobot.svg?branch=master)](https://travis-ci.org/swimlane/makobot) [![Code Climate](https://codeclimate.com/github/swimlane/makobot/badges/gpa.svg)](https://codeclimate.com/github/swimlane/makobot) [![Test Coverage](https://codeclimate.com/github/swimlane/makobot/badges/coverage.svg)](https://codeclimate.com/github/swimlane/makobot/coverage) 
 ---
 
 Makobot will monitor your [Slack channels](http://slack.com) and alert you to potential threats.
