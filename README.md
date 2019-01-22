@@ -1,3 +1,5 @@
+# ⚠️ This library is no longer under active development ⚠️
+
 ![Makobot](https://raw.githubusercontent.com/Swimlane/makobot/master/logo.png) 
 [![Build Status](https://travis-ci.org/swimlane/makobot.svg?branch=master)](https://travis-ci.org/swimlane/makobot) [![Code Climate](https://codeclimate.com/github/swimlane/makobot/badges/gpa.svg)](https://codeclimate.com/github/swimlane/makobot) [![Test Coverage](https://codeclimate.com/github/swimlane/makobot/badges/coverage.svg)](https://codeclimate.com/github/swimlane/makobot/coverage) 
 ---
